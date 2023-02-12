@@ -153,7 +153,7 @@ TextureImporter:
       name: Run 1
       rect:
         serializedVersion: 2
-        x: 19
+        x: 20
         y: 63
         width: 18
         height: 20
@@ -192,7 +192,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run 4
+      name: Run 3
       rect:
         serializedVersion: 2
         x: 0
@@ -213,7 +213,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run 5
+      name: Run 4
       rect:
         serializedVersion: 2
         x: 19
@@ -234,7 +234,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run 6
+      name: Run 5
       rect:
         serializedVersion: 2
         x: 38
@@ -318,7 +318,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Stand 4
+      name: Stand 3
       rect:
         serializedVersion: 2
         x: 1
@@ -392,14 +392,14 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Run 0: 610652846
-      Run 5: -1815370336
-      Stand 4: 1999019250
+      Run 5: 1454833225
+      Stand 3: 1999019250
       Run 2: -219667834
+      Run 3: 1454109391
       Stand 0: 305391911
       Stand 2: -1929973633
       Die 1: -743889920
-      Run 4: 1454109391
-      Run 6: 1454833225
+      Run 4: -1815370336
       Run 1: -1193081249
       Die 0: -1021701649
       Stand 1: -2109987422
