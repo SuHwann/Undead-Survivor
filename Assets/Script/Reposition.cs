@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Reposition : MonoBehaviour
 {
+    Collider2D coll;
+
+    private void Awake()
+    {
+        coll = GetComponent<Collider2D>();
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Area"))
+        if (!collision.CompareTag("Area")) //충돌에서 벗어난게 Area가 아니면 리턴 
             return;
         Vector3 playerPos = GameManager.Instance.player.transform.position;
         Vector3 myPos = transform.position;
@@ -17,7 +23,7 @@ public class Reposition : MonoBehaviour
         float dirX = playerDir.x < 0 ? -1 : 1;
         float dirY = playerDir.y < 0 ? -1 : 1;
 
-        switch (transform.tag)
+        switch (transform.tag) 
         {
             case "Ground":
                 if(diffx > diffy)
@@ -29,6 +35,10 @@ public class Reposition : MonoBehaviour
                 }
                 break;
             case "Enemy":
+                if(coll.enabled)
+                {
+                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f,3f),Random.Range(-3f,3f),0f)); //플레이어의 이동 방향에 따라 맞은 편에서 랜덤한 위치에서 등장하도록 이동 
+                }
                 break;
 
         }
