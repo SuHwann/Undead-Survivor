@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     public float speed; //이동 속도 변수
+    public float health; //현재 체력 
+    public float maxHealth; // max 체력
+    public RuntimeAnimatorController[] animCon; //RuntimeAnimatorController 변수
     public Rigidbody2D target; //추격할 타겟 변수
 
-    bool isLive = true; //몬스터 생존 여부 변수
+    bool isLive; //몬스터 생존 여부 변수
 
     Rigidbody2D rigid; //리지드 변수
+    Animator anim; //애니메이터 변수 
     SpriteRenderer spriter; //스트라이프 변수
     void Awake()
     {
         rigid= GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();    
         spriter= GetComponent<SpriteRenderer>();   
     }
     private void FixedUpdate()
@@ -28,5 +34,18 @@ public class Enemy : MonoBehaviour
     {
         if(!isLive) return; //몬스터가 생존상태가 아니면 return
         spriter.flipX = target.position.x < rigid.position.x; //플레이어를 바라봄
+    }
+    private void OnEnable() //오브젝트가 활성화 되면 자동으로 타겟을 플레이어로 지정
+    {
+        target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+        isLive = true;
+        health = maxHealth;
+    }
+    public void Init(SpawnData data) //초기 속성을 적용하는 함수 추가
+    {
+        anim.runtimeAnimatorController = animCon[data.spriteType];
+        speed = data.speed;
+        maxHealth = data.health;
+        health = data.health;
     }
 }
