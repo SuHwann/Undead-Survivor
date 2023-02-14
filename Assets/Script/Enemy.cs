@@ -48,4 +48,23 @@ public class Enemy : MonoBehaviour
         maxHealth = data.health;
         health = data.health;
     }
+    private void OnTriggerEnter2D(Collider2D collision) //충돌 이벤트 함수
+    {
+        if (!collision.CompareTag("Bullet")) return; //bullet이 아닐경우 리턴하는 필터
+        health -= collision.GetComponent<Bullet>().damage;
+
+        if(health > 0)
+        {
+            // .. Live , Hit Action
+        }
+        else
+        {
+            // .. Die\
+            Dead();
+        }
+        void Dead()
+        {
+            gameObject.SetActive(false); //사망시 게임오브젝트 비활성화
+        }
+    }
 }
