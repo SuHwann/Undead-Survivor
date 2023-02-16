@@ -10,28 +10,70 @@ public class Weapon : MonoBehaviour
     public float damage;
     public int count;
     public float speed;
+    private void Start()
+    {
+        Init();
+    }
     private void Update()
     {
-        
+        switch(id)
+        {
+            case 0: //무기 회전 
+                transform.Rotate(Vector3.back * speed * Time.deltaTime);
+                break;
+            default:
+                break;
+        }
+        // .. Test Code
+        if( Input.GetButtonDown("Jump"))
+        {
+            LevelUp(20, 5);
+        }
+    }
+    public void LevelUp(float damage , int count)//레벨업 함수 
+    {
+        this.damage = damage;
+        this.count += count;
+
+        if(id == 0)
+        {
+            Batch();
+        }
     }
     public void Init()
     {
         switch(id)
         {
             case 0:
-                speed = -150;
+                speed = 150;
                 Batch();
                 break;
             default:
                 break;
         }
     }
-    void Batch()
+    void Batch() //플레이어 무기 배치
     {
         for(int index =0; index < count; index++) {
-            Transform bullet = GameManager.Instance.pool.Get(prefabID).transform;
-            bullet.parent = transform; //bullet 부모 속성 변경
+            Transform bullet;
+            if(index < transform.childCount) //기존 오브젝트를 먼저 활용하고 ,
+            {
+                bullet = transform.GetChild(index);
+            }
+            else // 모자란 것은 오브젝트 풀링에서 가져온다
+            {
+                bullet = GameManager.Instance.pool.Get(prefabID).transform;
+                bullet.parent = transform;
+            }
+            bullet.parent = transform; //bullet 부모 자기자신으로 속성 변경
 
+            bullet.localPosition = Vector3.zero; //위치 초기화 
+            bullet.localRotation = Quaternion.identity; //회전값 초기화 
+
+            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            bullet.Rotate(rotVec);
+            bullet.Translate(bullet.up * 1.5f,Space.World); //space world 기준
+            bullet.GetComponent<Bullet>().Init(damage , -1); // -1 is Infinity Per.(-1은 무한으로 관통하는 무한 근접 공격)
         }
     }
 }
