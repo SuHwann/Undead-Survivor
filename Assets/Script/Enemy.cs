@@ -14,17 +14,21 @@ public class Enemy : MonoBehaviour
     bool isLive; //몬스터 생존 여부 변수
 
     Rigidbody2D rigid; //리지드 변수
+    Collider2D coll;  //콜라이더 변수 
     Animator anim; //애니메이터 변수 
     SpriteRenderer spriter; //스트라이프 변수
+    WaitForFixedUpdate wait; //코루틴 wait 변수 
     void Awake()
     {
         rigid= GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();    
         spriter= GetComponent<SpriteRenderer>();   
+        wait = new WaitForFixedUpdate();
     }
     private void FixedUpdate()
     {
-        if (!isLive) return; //몬스터가 생존상태가 아니면 return
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit")) return; //몬스터가 생존상태가 아니면 return
         Vector2 dirVec = target.position - rigid.position; //위치 차이 = 타켓 위치 - 나의 위치
         Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime; //nextVec : 이동할 방향을 계속 더해서 이동
         rigid.MovePosition(rigid.position + nextVec); //현재 위치 + 다음위치 
@@ -39,6 +43,10 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        spriter.sortingOrder = 2; //spriter renderrer 에 Orderin Layer 를 1로 변환
+        anim.SetBool("Dead", false);
         health = maxHealth;
     }
     public void Init(SpawnData data) //초기 속성을 적용하는 함수 추가
@@ -50,21 +58,37 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision) //충돌 이벤트 함수
     {
-        if (!collision.CompareTag("Bullet")) return; //bullet이 아닐경우 리턴하는 필터
+        if (!collision.CompareTag("Bullet") || !isLive) return; //bullet이 아닐경우 리턴하는 필터
+
         health -= collision.GetComponent<Bullet>().damage;
+        StartCoroutine(KnockBack()); //문자열로 안하는 이유는 추적하기 쉽게 하기 위함
 
         if(health > 0)
         {
             // .. Live , Hit Action
+            anim.SetTrigger("Hit");
         }
         else
         {
-            // .. Die\
-            Dead();
+            // .. Die
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated= false;
+            spriter.sortingOrder = 1; //spriter renderrer 에 Orderin Layer 를 1로 변환
+            anim.SetBool("Dead", true);
+            GameManager.Instance.kill++;
+            GameManager.Instance.GetExp();
         }
-        void Dead()
-        {
-            gameObject.SetActive(false); //사망시 게임오브젝트 비활성화
-        }
+    }
+    IEnumerator KnockBack() //넉백 코루틴 함수
+    {
+        yield return wait; //다음 하나의 물리 프레임 딜레이 
+        Vector3 playerPos = GameManager.Instance.player.transform.position; //플레이어의 위치 가져옴
+        Vector3 dirVec = transform.position - playerPos; //플레이어 기준의 반대 방향 : 현재 위치 - 플레이어 위치 
+        rigid.AddForce(dirVec.normalized * 3f, ForceMode2D.Impulse); //플레이어 기준 반대 방향으로 넉백 
+    }
+    void Dead() //몬스터 사망 함수
+    {
+        gameObject.SetActive(false); //사망시 게임오브젝트 비활성화
     }
 }
