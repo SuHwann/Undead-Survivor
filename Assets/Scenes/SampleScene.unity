@@ -13656,6 +13656,7 @@ MonoBehaviour:
   prefabs:
   - {fileID: 2693513618419726318, guid: bbf6b3c38feebf94b886d83bcc50cde5, type: 3}
   - {fileID: 7192390702372516378, guid: 4d69d27f650ba0b469fddf3f61875dd3, type: 3}
+  - {fileID: 2953374678152906695, guid: e19a00d618de67947a7d53010a2bc65b, type: 3}
 --- !u!1 &1740930094
 GameObject:
   m_ObjectHideFlags: 0
@@ -17990,10 +17991,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 495351057, guid: 6b9fc7cd5f45e4c4392e47a82c0b1ff2, type: 3}
-      propertyPath: count
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3031964068846405353, guid: 6b9fc7cd5f45e4c4392e47a82c0b1ff2, type: 3}
       propertyPath: m_Name
       value: Player
@@ -18041,6 +18038,14 @@ PrefabInstance:
     - target: {fileID: 3031964068846405358, guid: 6b9fc7cd5f45e4c4392e47a82c0b1ff2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4233867392728291168, guid: 6b9fc7cd5f45e4c4392e47a82c0b1ff2, type: 3}
+      propertyPath: count
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4233867392728291168, guid: 6b9fc7cd5f45e4c4392e47a82c0b1ff2, type: 3}
+      propertyPath: damage
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b9fc7cd5f45e4c4392e47a82c0b1ff2, type: 3}
