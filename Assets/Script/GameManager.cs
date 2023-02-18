@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public float gameTime; //게임시간 변수
     public float maxGameTime = 2 * 10f; // 최대게임시간을 담당할 변수 선언
     [Header("#Player Info")]
+    public int health;
+    public int maxHealth = 100;
     public int level;
     public int kill;
     public int exp;
@@ -19,6 +21,10 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this; //Awake 생명주기에서 인스턴스 변수를 자기자신 this로 초기화
+    }
+    private void Start()
+    {
+        health = maxHealth; 
     }
     private void Update()
     {
