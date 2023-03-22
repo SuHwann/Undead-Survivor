@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class Weapon : MonoBehaviour
 {
@@ -15,18 +18,14 @@ public class Weapon : MonoBehaviour
     Player player;
     private void Awake()
     {
-        player = GetComponentInParent<Player>(); //부모 오브젝트 player.cs 가져오기 
-    }
-    private void Start()
-    {
-        Init();
+        player = GameManager.Instance.player; //부모 오브젝트 player.cs 가져오기 
     }
     private void Update()
     {
         switch(id)
         {
             case 0: //무기 회전 
-                transform.Rotate(Vector3.back * speed * Time.deltaTime);
+                transform.Rotate(Vector3.back * (speed * Time.deltaTime));
                 break;
             default:
                 timer += Time.deltaTime;
@@ -48,13 +47,29 @@ public class Weapon : MonoBehaviour
         this.damage = damage;
         this.count += count;
 
-        if(id == 0)
-        {
-            Batch();
-        }
+        if(id == 0) {Batch();}
+        player.BroadcastMessage("ApplyGear",SendMessageOptions.DontRequireReceiver);
+
     }
-    public void Init()
+    public void Init(ItemData data)
     {
+        //Basic Set
+        name = "Weapon" + data.itemId;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
+        //Property Set
+        id = data.itemId;
+        damage = data.baseDamage;
+        count = data.baseCount;
+
+        for (int index = 0; index < GameManager.Instance.pool.prefabs.Length; index++)
+        {
+            if (data.projectile == GameManager.Instance.pool.prefabs[index])
+            {
+                prefabID = index;
+                break;
+            }
+        }
         switch(id)
         {
             case 0:
@@ -65,6 +80,7 @@ public class Weapon : MonoBehaviour
                 speed = 0.3f;
                 break;
         }
+        player.BroadcastMessage("ApplyGear",SendMessageOptions.DontRequireReceiver);
     }
     void Batch() //플레이어 무기 배치
     {
@@ -84,7 +100,7 @@ public class Weapon : MonoBehaviour
             bullet.localPosition = Vector3.zero; //위치 초기화 
             bullet.localRotation = Quaternion.identity; //회전값 초기화 
 
-            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            Vector3 rotVec = Vector3.forward * (360 * index) / count;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f,Space.World); //space world 기준
             bullet.GetComponent<Bullet>().Init(damage , -1 , Vector3.zero); // -1 is Infinity Per.(-1은 무한으로 관통하는 무한 근접 공격)

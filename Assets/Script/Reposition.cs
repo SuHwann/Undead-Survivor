@@ -5,15 +5,13 @@ using UnityEngine;
 public class Reposition : MonoBehaviour
 {
     Collider2D coll;
-
     private void Awake()
     {
         coll = GetComponent<Collider2D>();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Area")) //충돌에서 벗어난게 Area가 아니면 리턴 
-            return;
+        if (!collision.CompareTag("Area"))return; //충돌에서 벗어난게 Area가 아니면 리턴 
         Vector3 playerPos = GameManager.Instance.player.transform.position;
         Vector3 myPos = transform.position;
         float diffx = Mathf.Abs(playerPos.x - myPos.x); //플레이어 위치 - 타일맵 위치 계산으로 거리 구하기 
