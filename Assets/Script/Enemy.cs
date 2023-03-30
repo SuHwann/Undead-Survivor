@@ -28,14 +28,16 @@ public class Enemy : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!GameManager.Instance.isLive) return;
         if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit")) return; //몬스터가 생존상태가 아니면 return
         Vector2 dirVec = target.position - rigid.position; //위치 차이 = 타켓 위치 - 나의 위치
-        Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime; //nextVec : 이동할 방향을 계속 더해서 이동
+        Vector2 nextVec = dirVec.normalized * (speed * Time.fixedDeltaTime); //nextVec : 이동할 방향을 계속 더해서 이동
         rigid.MovePosition(rigid.position + nextVec); //현재 위치 + 다음위치 
         rigid.velocity = Vector2.zero; // 물리적 충돌로 인한 넉백 방지 
     }
     private void LateUpdate()
     {
+        if (!GameManager.Instance.isLive) return;
         if(!isLive) return; //몬스터가 생존상태가 아니면 return
         spriter.flipX = target.position.x < rigid.position.x; //플레이어를 바라봄
     }

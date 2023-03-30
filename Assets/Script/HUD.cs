@@ -22,7 +22,7 @@ public class HUD : MonoBehaviour
         {
             case InfoType.Exp: //슬라이더에 적용할 값 : 현재 경험치 / 최대 경험치 
                 float curExp = GameManager.Instance.exp;
-                float maxExp = GameManager.Instance.nextExp[GameManager.Instance.level];
+                float maxExp = GameManager.Instance.nextExp[Mathf.Min(GameManager.Instance.level,GameManager.Instance.nextExp.Length-1)];
                 mySlider.value = curExp / maxExp;
                 break;
             case InfoType.Level:

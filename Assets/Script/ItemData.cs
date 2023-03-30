@@ -10,6 +10,7 @@ public class ItemData : ScriptableObject //스크립트 기반 오브젝트
     public ItemType itemType; //아이템 타입변수
     public int itemId;
     public string itemName;
+    [TextArea]
     public string itemDesc;
     public Sprite itemIcon;
     [Header("# Level Data")]
@@ -19,4 +20,5 @@ public class ItemData : ScriptableObject //스크립트 기반 오브젝트
     public int[] counts;
     [Header("# Weapon")] 
     public GameObject projectile;
+    public Sprite hand;
 }

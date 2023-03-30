@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec; //키보드 입력값 변수
     public float speed; //이동 속도
     public Scanner scaneer; //scanner변수
+    public Hand[] hands;
     private Rigidbody2D rigid;
     private Animator anim;
     private SpriteRenderer spriter;
@@ -21,18 +22,24 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
         scaneer = GetComponent<Scanner>();
+        hands = GetComponentsInChildren<Hand>(true);
+    }    
+    private void OnMove(InputValue value)
+    {
+        if (!GameManager.Instance.isLive)
+            return;
+        inputVec = value.Get<Vector2>();
     }
     private void FixedUpdate() //물리 연산 프레임마다 호출되는 생명주기 함수
     {
         Vector2 nextVec = inputVec * (speed * Time.fixedDeltaTime);
         rigid.MovePosition(rigid.position + nextVec); //위치 이동 : 현재 rigid 위치에서 input 값을 더해주는 개념
     }
-    private void OnMove(InputValue value)
-    {
-        inputVec = value.Get<Vector2>();
-    }
+
     private void LateUpdate() //프레임이 종료되기 직전에 실행되는 생명주기 함수
     {
+        if (!GameManager.Instance.isLive)
+            return;
         anim.SetFloat(Speed,inputVec.magnitude);
         if (inputVec.x != 0)
         {

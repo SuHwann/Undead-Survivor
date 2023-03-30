@@ -12,6 +12,8 @@ public class Item : MonoBehaviour
     
     private Image icon;
     private Text textLevel;
+    private Text textName;
+    private Text textDesc;
 
     private void Awake()
     {
@@ -20,10 +22,28 @@ public class Item : MonoBehaviour
 
         Text[] texts = GetComponentsInChildren<Text>();
         textLevel = texts[0];
+        textName = texts[1];
+        textDesc = texts[2];
+        textName.text = data.itemName;
     }
-    private void LateUpdate()
+    void OnEnable()
     {
         textLevel.text = "Lv." + (level + 1);
+
+        switch (data.itemType)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                break;
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
+                break; 
+            default:
+                textDesc.text = string.Format(data.itemDesc);
+                break;
+        }
     }
 
     public void OnClick()
@@ -42,11 +62,12 @@ public class Item : MonoBehaviour
                    float nextdamage = data.baseDamage;
                    int nextCount = 0;
 
-                   nextdamage += data.baseDamage * data.damages[level]; //처음 이후의 레벨업은 데미지와 횟루를 계산
+                   nextdamage += data.baseDamage * data.damages[level]; //처음 이후의 레벨업은 데미지와 횟수를 계산
                    nextCount += data.counts[level];
                    
                    weapon.LevelUp(nextdamage,nextCount);
-               }
+               } 
+               level++;
                break;
            case ItemData.ItemType.Glove:
            case ItemData.ItemType.Shoe:
@@ -61,12 +82,12 @@ public class Item : MonoBehaviour
                    float nextRate = data.damages[level];
                    gear.LevelUp(nextRate);
                }
+               level++;
                break;
            case ItemData.ItemType.Heal:
                GameManager.Instance.health = GameManager.Instance.maxHealth;
                break;
         }
-        level++;
         if (level == data.damages.Length)
         {
             GetComponent<Button>().interactable = false;
