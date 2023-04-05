@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+/*플레이어의 손에 달린 무기가 플레이어의 기준으로 flip이 반전되는 기능*/
 public class Hand : MonoBehaviour
 {
     public bool isLeft; //왼손인지 아닌지 구별하기위한 bool값 변수
     public SpriteRenderer spriter;
-
     private SpriteRenderer player;
     
     Vector3 rightPos = new Vector3(0.35f, -0.15f, 0);
@@ -18,7 +17,6 @@ public class Hand : MonoBehaviour
     {
         player = GetComponentsInParent<SpriteRenderer>()[1];
     }
-
     void LateUpdate()
     {
         bool isReverse = player.flipX;
@@ -32,7 +30,6 @@ public class Hand : MonoBehaviour
             transform.localPosition = isReverse ? rightPosReverse : rightPos;
             spriter.flipX = isReverse;
             spriter.sortingOrder = isReverse ? 6 : 4;
-
         }
     }
 }

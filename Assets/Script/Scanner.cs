@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*가장 가까운 몬스터 타겟을 result 에 저장하여 타킷과 자기 자신의 거리를 계산해주는 스크립트*/
 public class Scanner : MonoBehaviour
 {
     public float scanRange; //범위 

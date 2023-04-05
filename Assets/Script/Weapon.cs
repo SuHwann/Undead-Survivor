@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -46,7 +47,7 @@ public class Weapon : MonoBehaviour
     }
     public void LevelUp(float damage , int count)//레벨업 함수 
     {
-        this.damage = damage;
+        this.damage = damage * Character.Damage;
         this.count += count;
 
         if(id == 0) {Batch();}
@@ -61,8 +62,8 @@ public class Weapon : MonoBehaviour
         transform.localPosition = Vector3.zero;
         //Property Set
         id = data.itemId;
-        damage = data.baseDamage;
-        count = data.baseCount;
+        damage = data.baseDamage * Character.Damage;
+        count = data.baseCount+ Character.Count;
 
         for (int index = 0; index < GameManager.Instance.pool.prefabs.Length; index++)
         {
@@ -75,11 +76,11 @@ public class Weapon : MonoBehaviour
         switch(id)
         {
             case 0:
-                speed = 150;
+                speed = 150 * Character.WeaponSpeed;
                 Batch();
                 break;
             default:
-                speed = 0.3f;
+                speed = 0.3f * Character.WeaponRate;
                 break;
         }
         

@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     [Header("#Game Control")] public bool isLive;
     public float gameTime; //게임시간 변수
     public float maxGameTime = 2 * 10f; // 최대게임시간을 담당할 변수 선언
-    [Header("#Player Info")]
+    [Header("#Player Info")] 
+    public int playerId; //캐릭터ID를 저장할 변수선언
     public float health;
     public float maxHealth = 100;
     public int level;
@@ -28,10 +29,12 @@ public class GameManager : MonoBehaviour
     {
         Instance = this; //Awake 생명주기에서 인스턴스 변수를 자기자신 this로 초기화
     }
-    public void GameStart()
+    public void GameStart(int id)
     {
+        playerId = id;
         health = maxHealth; 
-        uiLevelUp.Select(0);//임시 스크립트 (첫번째 캐릭터 선택)
+        player.gameObject.SetActive(true);//게임 시작할 때 플레이어 활성화 후 기본 무기 지급
+        uiLevelUp.Select(playerId % 2);//임시 스크립트 (첫번째 캐릭터 선택)
         Resume();
     }
     public void GameOver()
