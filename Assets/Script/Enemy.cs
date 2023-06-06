@@ -69,6 +69,7 @@ public class Enemy : MonoBehaviour
         {
             // .. Live , Hit Action
             anim.SetTrigger("Hit");
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
         }
         else
         {
@@ -80,6 +81,11 @@ public class Enemy : MonoBehaviour
             anim.SetBool("Dead", true);
             GameManager.Instance.kill++;
             GameManager.Instance.GetExp();
+
+            if(GameManager.Instance.isLive)
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
         }
     }
     IEnumerator KnockBack() //넉백 코루틴 함수

@@ -111,7 +111,7 @@ public class Weapon : MonoBehaviour
             Vector3 rotVec = Vector3.forward * (360 * index) / count;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f,Space.World); //space world 기준
-            bullet.GetComponent<Bullet>().Init(damage , -1 , Vector3.zero); // -1 is Infinity Per.(-1은 무한으로 관통하는 무한 근접 공격)
+            bullet.GetComponent<Bullet>().Init(damage , -100 , Vector3.zero); // -1 is Infinity Per.(-1은 무한으로 관통하는 무한 근접 공격)
         }
     }
     void Fire() //총알 생성 및 발사
@@ -126,5 +126,7 @@ public class Weapon : MonoBehaviour
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up , dir);
         bullet.GetComponent<Bullet>().Init(damage, count, dir);
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
